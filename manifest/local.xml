@@ -13,4 +13,9 @@
            remote="amazon-oss"
            revision="fa65a4bee671397b16d3e548463ef80b0144ca81"
            upstream="cm-14.1" />
+  <!-- SwiftShader from Android 8.1: software GLES 2.0 with ARM32 Subzero. -->
+  <project name="platform/external/swiftshader"
+           path="external/swiftshader"
+           remote="aosp"
+           revision="refs/tags/android-8.1.0_r45" />
 </manifest>

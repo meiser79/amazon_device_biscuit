@@ -43,6 +43,7 @@
   <project name="LineageOS/android_external_cmsdk-api-coverage" path="external/cmsdk-api-coverage" revision="c281622c132eade02fd790fca993d8fd09385cc8" upstream="refs/heads/cm-14.1" dest-branch="refs/heads/cm-14.1"/>
   <project name="LineageOS/android_external_connectivity" path="external/connectivity" revision="9a6a5e7b56f1e67c7e585d75f18eacc54398695d" upstream="refs/heads/cm-14.1" dest-branch="refs/heads/cm-14.1"/>
   <project name="LineageOS/android_external_curl" path="external/curl" revision="d5d65601632665b732ef30e5072346f1d5d82d63" upstream="refs/heads/cm-14.1" dest-branch="refs/heads/cm-14.1" groups="pdk"/>
+  <project name="platform/external/swiftshader" path="external/swiftshader" remote="aosp" revision="c51f97b934e1c5f0c739a6b1e4715dbf9410f1b1" upstream="refs/tags/android-8.1.0_r45" dest-branch="refs/tags/android-8.1.0_r45"/>
   <project name="LineageOS/android_external_cyanogen_UICommon" path="external/uicommon" revision="f465bc68b7d5311ca2dc13f39a8466eb4bff6027" upstream="refs/heads/cm-14.1" dest-branch="refs/heads/cm-14.1"/>
   <project name="LineageOS/android_external_deqp" path="external/deqp" revision="8ed8f43aed846a734a900de0072353dc11f71edb" upstream="refs/heads/cm-14.1" dest-branch="refs/heads/cm-14.1" groups="pdk-fs"/>
   <project name="LineageOS/android_external_dng_sdk" path="external/dng_sdk" revision="6859c11169091749b2e33cf5ae34e3337c53f31f" upstream="refs/heads/cm-14.1" dest-branch="refs/heads/cm-14.1" groups="pdk"/>
