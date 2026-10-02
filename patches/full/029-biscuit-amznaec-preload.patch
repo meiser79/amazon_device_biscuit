@@ -1,0 +1,9 @@
+--- a/frameworks/av/media/audioserver/audioserver.rc
++++ b/frameworks/av/media/audioserver/audioserver.rc
+@@ -4,4 +4,6 @@
+     # media gid needed for /dev/fm (radio) and for /data/misc/media (tee)
+     group audio camera drmrpc inet media mediadrm net_bt net_bt_admin net_bw_acct qcom_diag
+     ioprio rt 4
++    # ponytail: Biscuit mic AEC shim; interposes tinyalsa pcm_open/read/close for the 9 channel FPGA capture stream.
++    setenv LD_PRELOAD /system/lib/libamznaec_shim.so
+     writepid /dev/cpuset/foreground/tasks /dev/stune/foreground/tasks

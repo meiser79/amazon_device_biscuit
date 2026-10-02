@@ -16,7 +16,7 @@ WORKSPACE="$ROOT/workspace/cm14.1"
 [[ -d "$DEVICE" ]]
 [[ -d "$VENDOR" ]]
 [[ ! -e "$ROOT/cm14.1" ]]
-[[ "$(find "$FULL_PATCH_DIR" -maxdepth 1 -name '*.patch' | wc -l)" == 28 ]]
+[[ "$(find "$FULL_PATCH_DIR" -maxdepth 1 -name '*.patch' | wc -l)" == 29 ]]
 [[ "$(find "$MINIMAL_PATCH_DIR" -maxdepth 1 -name '*.patch' | wc -l)" == 7 ]]
 [[ "$(find "$KERNEL_PATCH_DIR" -maxdepth 1 -name '*.patch' | wc -l)" == 3 ]]
 
@@ -49,6 +49,7 @@ printf '%s\n' "$FULL_PATCH_DIR"/*.patch | sed 's#.*/##' | diff -u - <(cat <<'EOF
 026-biscuit-audio-route-wrapper.patch
 027-biscuit-audio-route-forwarding.patch
 028-biscuit-audio-gpio-mic-mute.patch
+029-biscuit-amznaec-preload.patch
 EOF
 )
 

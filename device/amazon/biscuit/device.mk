@@ -86,3 +86,8 @@ PRODUCT_COPY_FILES += \
     device/amazon/biscuit/biscuit-service/animations/boot-complete-green.animation:$(TARGET_COPY_OUT_SYSTEM)/etc/biscuit-ledd/boot-complete-green.animation
 
 PRODUCT_CHARACTERISTICS := nosdcard,headless
+
+# Mic echo cancellation shim, LD_PRELOADed into audioserver (patches/full/029).
+PRODUCT_PACKAGES += \
+    libamznaec_shim \
+    libwebrtc_audio_preprocessing
