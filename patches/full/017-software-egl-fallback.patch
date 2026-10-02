@@ -1,12 +1,42 @@
+From: Peter Meiser <peter.meiser@gmx.com>
+Subject: [PATCH] EGL Loader: prefer split software drivers over libGLES_android
+
+The headless Biscuit has no vendor GLES blob. The previous fallback
+returned /system/lib/egl/libGLES_android.so as soon as the combined
+"GLES" lookup found nothing. Loader::open() asks for the combined
+driver first, so libagl (GLES 1.x only) was always picked and a split
+driver such as SwiftShader (libEGL_swiftshader.so,
+libGLESv1_CM_swiftshader.so, libGLESv2_swiftshader.so) was never
+tried.
+
+Leave the combined lookup empty so Loader::open() goes on to the split
+EGL/GLESv1_CM/GLESv2 lookup. Only when a split library is missing too,
+fall back to libGLES_android.so, which exports all three APIs.
+
+---
+ opengl/libs/EGL/Loader.cpp | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
+
 --- a/frameworks/native/opengl/libs/EGL/Loader.cpp
 +++ b/frameworks/native/opengl/libs/EGL/Loader.cpp
-@@ -415,3 +415,7 @@
+@@ -413,6 +413,18 @@
+             }
+ 
 -            // we didn't find the driver. gah.
 -            result.clear();
-+            // ponytail: headless Biscuit has no vendor GLES blob; use source-built software GLES.
++            // ponytail: headless Biscuit has no vendor GLES blob.
++            // Leave the combined "GLES" lookup empty so Loader::open() tries
++            // the split EGL/GLESv1_CM/GLESv2 drivers (e.g. SwiftShader) next.
++            // Only if a split driver is missing too, use the source-built
++            // software renderer, which provides all three APIs.
++            if (!strcmp(kind, "GLES")) {
++                result.clear();
++                return result;
++            }
 +#if defined(__LP64__)
 +            result.setTo("/system/lib64/egl/libGLES_android.so");
 +#else
 +            result.setTo("/system/lib/egl/libGLES_android.so");
 +#endif
              return result;
+         }

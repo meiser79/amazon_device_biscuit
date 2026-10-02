@@ -66,6 +66,14 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES_OVERRIDES += \
     system/etc/audio_effects.conf
 
+# SwiftShader: GLES 1.1/2.0 in software for apps that need a real GLES 2 context.
+# Its modules install to /system/vendor/lib/egl, the only path libEGL_swiftshader
+# loads its own GLES libraries from.
+PRODUCT_PACKAGES += \
+    libEGL_swiftshader \
+    libGLESv1_CM_swiftshader \
+    libGLESv2_swiftshader
+
 # Native LED ring controller plus framework bridge for shell volume/mute/Wi-Fi/BT commands.
 PRODUCT_PACKAGES += \
     biscuit-ledd \

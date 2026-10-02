@@ -75,9 +75,11 @@
          // Acquire wakelock during PIN code request to bring up LCD display
 --- a/device/amazon/mt8163-common/system.prop
 +++ b/device/amazon/mt8163-common/system.prop
-@@ -8,4 +8,5 @@
+@@ -7,6 +7,7 @@
+ debug.hwui.render_dirty_regions=false
  # Wi-Fi
  wifi.interface=wlan0
 +persist.service.bt.a2dp.sink=true
  
- ro.opengles.version=196609
+ # ponytail: SwiftShader provides GLES 2.0 in software; the boot animation crashes on the 1x1 display.
+ debug.sf.nobootanimation=1
