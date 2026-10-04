@@ -95,6 +95,8 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_CHARACTERISTICS := nosdcard,headless
 
+WITH_SU := true
+
 # Mic echo cancellation shim, LD_PRELOADed into audioserver (patches/full/029).
 PRODUCT_PACKAGES += \
     libamznaec_shim \
