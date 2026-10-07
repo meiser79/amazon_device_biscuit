@@ -43,7 +43,7 @@ The extractor verifies every blob by size and SHA-256, stages untracked files un
 - System image SHA256: `bd928aa5087b8d8c40095c784dfc159cc2555ed4130d617b258bfd0a06659f7c`
 - Tracked manifest: `vendor/amazon/mt8163-common/biscuit-headless-hwc-files.txt`
 
-Policy: use only the verified headless HWC blob required by SurfaceFlinger; do not import a wider graphics stack without a separate validated need.
+Policy: the default HWC is the source-built `hwcomposer.biscuit` (API 1.1, see `docs/building-cm14.1-images.md`). The verified stock blob stays staged only as a fallback (`ro.hardware.hwcomposer` unset); do not import a wider graphics stack without a separate validated need.
 
 ## Patch policy
 

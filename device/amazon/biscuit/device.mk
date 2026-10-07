@@ -93,6 +93,13 @@ PRODUCT_COPY_FILES += \
     device/amazon/biscuit/biscuit-service/animations/alexa_thinking.animation:$(TARGET_COPY_OUT_SYSTEM)/etc/biscuit-ledd/alexa_thinking.animation \
     device/amazon/biscuit/biscuit-service/animations/boot-complete-green.animation:$(TARGET_COPY_OUT_SYSTEM)/etc/biscuit-ledd/boot-complete-green.animation
 
+# Headless HWC 1.1: gives SurfaceFlinger a primary display without an fbdev.
+# hw_get_module() checks ro.hardware.hwcomposer before ro.hardware and
+# ro.board.platform, so the stock hwcomposer.mt8163.so (API 1.0) stays
+# installed as a fallback: remove the property to go back to it.
+PRODUCT_PACKAGES += hwcomposer.biscuit
+PRODUCT_PROPERTY_OVERRIDES += ro.hardware.hwcomposer=biscuit
+
 PRODUCT_CHARACTERISTICS := nosdcard,headless
 
 WITH_SU := true

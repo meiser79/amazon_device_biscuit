@@ -142,7 +142,7 @@ Patch names are numbered because their order is part of the build contract. `scr
 | `017-software-egl-fallback.patch` | Falls back to source-built software GLES when a proprietary EGL driver is unavailable. |
 | `018-hwui-egl-config-fallback.patch` | Makes HWUI try a basic ES2/window EGL configuration before treating missing vendor configuration as fatal. |
 | `019-headless-hwui-disable.patch` | Disables GPU/HWUI-dependent package and rendering behavior when `ro.config.no_gpu=true`. |
-| `020-headless-hwc1-fake-display.patch` | Gives SurfaceFlinger a fake 1x1 primary display/no-op HWC path so full Android can boot without a framebuffer device. |
+| `020-headless-hwc1-fake-display.patch` | Fallback for the stock API 1.0 HWC blob: with `ro.config.no_gpu=true` and no framebuffer device, SurfaceFlinger gets a fake 1x1 primary display instead of aborting. Not used while `hwcomposer.biscuit` (API 1.1) is selected. |
 | `021-biscuit-radio-launchers.patch` | Starts the Fire OS 32-bit `wmt_loader` and `wmt_launcher`, applies MTK device-node permissions, and initializes the Biscuit radio stack. |
 | `022-biscuit-sta-only-wifi.patch` | Removes unneeded AP, P2P, WPS, Wi-Fi Display, interworking, and related supplicant/framework paths for Biscuit STA operation. |
 | `023-biscuit-mic-mute.patch` | Adds Biscuit microphone-mute key/service/broadcast handling so framework mute requests and the Biscuit control surface share state. |
@@ -163,6 +163,16 @@ Patch names are numbered because their order is part of the build contract. `scr
 | `005-wpa-passphrase.patch` | Exposes CM14's existing `wpa_passphrase.c` as the reproducibly built `/system/bin/wpa_passphrase` utility. |
 | `006-sepolicy-exfat-ntfs-types.patch` | Defines the exFAT and NTFS file types otherwise supplied by CM common sepolicy, which minimal deliberately does not inherit. |
 | `007-framework-free-systemimage-trim.patch` | Filters framework/default/debug/recovery leftovers from the minimal system image while retaining its explicit runtime manifest. |
+
+## Headless display
+
+Biscuit has no panel and its kernel has no framebuffer driver (`CONFIG_MTK_FB` is off and the MediaTek display sources are not part of the Fire OS drop). SurfaceFlinger still needs a primary display, a vsync source and a place to post frames.
+
+- `device/amazon/biscuit/hwcomposer/` builds `hwcomposer.biscuit`, a headless HWC with API 1.1. SurfaceFlinger reads the display from it, so no framebuffer device is needed. It reports one primary display (default 320x320, 60 Hz, 213 dpi), no external display, marks every layer `HWC_FRAMEBUFFER` (composition stays in SurfaceFlinger's GLES, software GL is fine), discards the finished frame and generates vsync in software.
+- `device.mk` selects it with `ro.hardware.hwcomposer=biscuit`. Remove that property to fall back to the stock `hwcomposer.mt8163.so` (API 1.0) together with patch `020`.
+- The display size can be changed without a rebuild: `setprop debug.biscuit.hwc.size 240x320; stop; start` (`WxH`, 1..4096, invalid values fall back to 320x320). It is read when SurfaceFlinger opens the HWC.
+- Check on the device: `dumpsys SurfaceFlinger | grep -A3 "Hardware Composer state"` must show version `01010001` and the line `Biscuit headless HWC 1.1`.
+- Host test (plain, ASan/UBSan and TSan builds): `bash tests/test-hwc-host.sh`. It needs the headers from a synced CM14.1 tree, or `HWC_HEADERS` and `SYSCORE_HEADERS`.
 
 ## Static validation
 

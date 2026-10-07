@@ -130,6 +130,10 @@ grep -Fqx '# ponytail: CM14 Biscuit uses STA only; P2P-only fields make STA-only
 ! grep -Fq 'p2p_no_group_iface' "$DEVICE/wpa_supplicant_overlay.conf"
 
 grep -Fqx 'lib/hw/hwcomposer.mt8163.so:lib/hw/hwcomposer.mt8163.so:ec66527090a97538914a5d883cf5b43013aea69905f29c9e4af490eb8a48e79a:13568' "$VENDOR/biscuit-headless-hwc-files.txt"
+grep -Fqx 'PRODUCT_PACKAGES += hwcomposer.biscuit' "$DEVICE/device.mk"
+grep -Fqx 'PRODUCT_PROPERTY_OVERRIDES += ro.hardware.hwcomposer=biscuit' "$DEVICE/device.mk"
+grep -Fqx 'LOCAL_MODULE := hwcomposer.biscuit' "$DEVICE/hwcomposer/Android.mk"
+grep -Fq 'ctx->device.common.version = HWC_DEVICE_API_VERSION_1_1;' "$DEVICE/hwcomposer/hwcomposer.cpp"
 grep -Fqx 'system/vendor/bin/wmt_loader:vendor/bin/wmt_loader:de9ee285a09a7db5b079233f7c9129c5484ecb6701b54da45e2a29f310e74ff9:17992' "$VENDOR/biscuit-radio-files.txt"
 grep -Fqx 'system/vendor/bin/wmt_launcher:vendor/bin/wmt_launcher:1f34425d727ea64524c9edaeac5e6b295df7a6054703dcc79b164021560252e5:31448' "$VENDOR/biscuit-radio-files.txt"
 grep -Fqx 'system/vendor/lib/libbt-vendor.so:vendor/lib/libbt-vendor.so:aab202280e09941a812983c7b7fb259fcb48bf43912f05f8cf7e47e32380ec87:13844' "$VENDOR/biscuit-bluetooth-files.txt"

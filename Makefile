@@ -18,6 +18,7 @@ sync:
 test:
 	bash tests/test-apply-patches.sh
 	bash tests/test-compatibility.sh
+	bash tests/test-hwc-host.sh
 	bash tests/test-minimal-product.sh
 	bash tests/test-kernel-root-cmdline.sh
 	bash tests/test-amonet2-bcb-slotselect.sh
