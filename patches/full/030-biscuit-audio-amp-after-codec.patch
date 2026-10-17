@@ -1,0 +1,53 @@
+--- a/hardware/amazon/audio/audio_wrapper.c
++++ b/hardware/amazon/audio/audio_wrapper.c
+@@ -27,6 +27,7 @@
+     struct audio_stream_out stream;
+     struct audio_stream_out* amazon_stream;
+     bool active;
++    bool amp_on;
+ };
+ 
+ static struct audio_hw_device* real_dev(struct audio_hw_device* dev) {
+@@ -409,11 +410,15 @@
+     struct wrapper_stream_out* out = wrap_out_common(stream);
+     int ret = 0;
+ 
++    /* Amplifier off first, so it does not amplify the DAC powering down. */
++    if (out->amp_on) {
++        set_speaker_amp(false);
++        out->amp_on = false;
++    }
+     if (out->amazon_stream && out->amazon_stream->common.standby) {
+         ret = out->amazon_stream->common.standby(&out->amazon_stream->common);
+     }
+     out->active = false;
+-    set_speaker_amp(false);
+     return ret;
+ }
+ 
+@@ -467,13 +472,23 @@
+ static ssize_t out_write(struct audio_stream_out* stream, const void* buffer,
+                          size_t bytes) {
+     struct wrapper_stream_out* out = wrap_out(stream);
++    ssize_t ret;
+ 
+     if (!out->active) {
+         apply_speaker_route();
+-        set_speaker_amp(true);
+         out->active = true;
+     }
+-    return out->amazon_stream->write(out->amazon_stream, buffer, bytes);
++    /*
++     * The first write opens the PCM: it starts I2S and powers up the
++     * TLV320DAC3203 DAC and output driver. Switching the amplifier on only
++     * afterwards avoids the crackle of a cold codec powering up into it.
++     */
++    ret = out->amazon_stream->write(out->amazon_stream, buffer, bytes);
++    if (!out->amp_on) {
++        set_speaker_amp(true);
++        out->amp_on = true;
++    }
++    return ret;
+ }
+ 
+ static int out_get_render_position(const struct audio_stream_out* stream,
