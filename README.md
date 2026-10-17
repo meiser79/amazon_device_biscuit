@@ -22,6 +22,20 @@ This repository builds two images:
 
 See **[Building the CM14.1 images](docs/building-cm14.1-images.md)** for prerequisites, both build flows, profile switching, artifacts, validation, and an explanation of every product and kernel patch.
 
+## LineageOS 18.1
+
+A LineageOS 18.1 port of the full product lives in standalone trees on the amazon-oss MT8163 common tree, with Biscuit's own 32-bit Fire OS 6 Linux 3.18 kernel:
+
+| Tree | Repository |
+| --- | --- |
+| Device (`device/amazon/biscuit`) | [meiser79/android_device_amazon_biscuit](https://github.com/meiser79/android_device_amazon_biscuit/tree/lineage-18.1), branch `lineage-18.1` |
+| Kernel (`kernel/amazon/biscuit`) | [meiser79/android_kernel_amazon_biscuit](https://github.com/meiser79/android_kernel_amazon_biscuit/tree/lineage-18.1-3.18), branch `lineage-18.1-3.18`: the Fire OS 6.5.7.1 3.18 source that CM14 builds, plus `patches/kernel/`, the AOSP android-3.18 binder and the amonet v2 slot exporter |
+| Vendor (`vendor/amazon/biscuit`) | [meiser79/android_vendor_amazon_biscuit](https://github.com/meiser79/android_vendor_amazon_biscuit/tree/lineage-18.1), branch `lineage-18.1` |
+
+The amonet v2 boot chain (Fire OS 6 preloader, LK and ATF) does not start 64-bit kernels, so the amazon-oss arm64 4.9 kernel cannot boot on Biscuit. The kernel repository's `lineage-18.1` branch keeps that 4.9 port (a fork of [amazon-oss/android_kernel_amazon_mt8163](https://github.com/amazon-oss/android_kernel_amazon_mt8163)) for reference only.
+
+The device tree's [README](https://github.com/meiser79/android_device_amazon_biscuit/blob/lineage-18.1/README.md) has the local manifest, blob extraction, build and install steps. See **[the LineageOS 18.1 port study](docs/lineage-18.1-port-study.md)** for the current status, the decision record and the boot diagnosis.
+
 ## Layout
 
 ```txt
